@@ -32,7 +32,7 @@ if aws sts get-caller-identity > /dev/null 2>&1; then
     
     # 6. API Gateway URLを取得
     echo "📝 API Gateway URLを取得中..."
-    API_URL=$(aws cloudformation describe-stacks --stack-name CdkInfrastructureStack --query 'Stacks[0].Outputs[?OutputKey==`ApiGatewayUrl`].OutputValue' --output text)
+    API_URL=$(aws cloudformation describe-stacks --stack-name CdkInfrastructureStack --region us-east-1 --query 'Stacks[0].Outputs[?OutputKey==`ApiGatewayUrl`].OutputValue' --output text)
     
     if [ ! -z "$API_URL" ]; then
         echo "✅ API Gateway URL: $API_URL"
