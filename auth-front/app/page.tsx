@@ -9,11 +9,16 @@ export default function PasswordForm() {
   const [password, setPassword] = useState('');
   const [message, setMessage] = useState('');
   const [isLoading, setIsLoading] = useState(false);
+  const [showPassword, setShowPassword] = useState(false); // 追加: 表示/非表示トグル
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    setIsLoading(true);
     setMessage('');
+    if (!password) {
+      setMessage('パスワードを入力してください');
+      return;
+    }
+    setIsLoading(true);
 
     try {
       // APIGateway経由でLambda関数を呼び出し
@@ -104,43 +109,96 @@ export default function PasswordForm() {
             パスワード:
             <div style={{ position: 'relative', width: '100%' }}>
               <input
-                type="password"
+                type={showPassword ? 'text' : 'password'}
                 value={password}
                 onChange={e => setPassword(e.target.value)}
                 disabled={isLoading}
                 placeholder="パスワードを入力してください"
                 style={{
                   fontSize: '1.2rem',
-                  padding: '12px 40px 12px 12px',
+                  padding: '12px 44px 12px 12px',
                   marginTop: '8px',
                   width: '100%',
-                  borderRadius: '6px',
+                  borderRadius: '8px',
                   border: '1px solid #ccc',
                   boxSizing: 'border-box',
                   color: '#000',
                   background: isLoading ? '#f5f5f5' : '#fff',
+                  outline: 'none',
+                  transition: 'border-color .2s, box-shadow .2s'
                 }}
+                onFocus={e => (e.currentTarget.style.boxShadow = '0 0 0 3px rgba(0,112,243,0.25)')}
+                onBlur={e => (e.currentTarget.style.boxShadow = 'none')}
               />
               {password && !isLoading && (
                 <button
                   type="button"
-                  onClick={() => setPassword('')}
-                  aria-label="入力をクリア"
+                  onClick={() => setShowPassword(prev => !prev)}
+                  aria-label={showPassword ? 'パスワードを隠す' : 'パスワードを表示'}
+                  title={showPassword ? 'パスワードを隠す' : 'パスワードを表示'}
                   style={{
                     position: 'absolute',
-                    right: '12px',
+                    right: '8px',
                     top: '50%',
                     transform: 'translateY(-50%)',
-                    background: 'transparent',
+                    width: '28px',
+                    height: '28px',
+                    display: 'flex',
+                    alignItems: 'center',
+                    justifyContent: 'center',
+                    background: 'rgba(0,0,0,0.05)',
                     border: 'none',
+                    borderRadius: '50%',
                     cursor: 'pointer',
-                    fontSize: '1.2rem',
-                    color: '#888',
                     padding: 0,
                     lineHeight: 1,
+                    transition: 'background .18s, transform .12s',
+                    color: '#555'
+                  }}
+                  onMouseEnter={e => (e.currentTarget.style.background = 'rgba(0,0,0,0.12)')}
+                  onMouseLeave={e => (e.currentTarget.style.background = 'rgba(0,0,0,0.05)')}
+                  onMouseDown={e => {
+                    e.preventDefault();
+                    e.currentTarget.style.transform = 'translateY(-50%) scale(.9)';
+                  }}
+                  onMouseUp={e => (e.currentTarget.style.transform = 'translateY(-50%) scale(1)')}
+                  onKeyDown={e => {
+                    if (e.key === 'Escape') setShowPassword(false);
                   }}
                 >
-                  ×
+                  {showPassword ? (
+                    // eye-off icon
+                    <svg
+                      width="16"
+                      height="16"
+                      viewBox="0 0 24 24"
+                      fill="none"
+                      stroke="currentColor"
+                      strokeWidth="2"
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      aria-hidden="true"
+                    >
+                      <path d="M17.94 17.94A10.94 10.94 0 0 1 12 20c-7 0-11-8-11-8a21.77 21.77 0 0 1 5.06-6.94M9.9 4.24A10.94 10.94 0 0 1 12 4c7 0 11 8 11 8a21.83 21.83 0 0 1-2.16 3.19M14.12 14.12a3 3 0 0 1-4.24-4.24" />
+                      <line x1="1" y1="1" x2="23" y2="23" />
+                    </svg>
+                  ) : (
+                    // eye icon
+                    <svg
+                      width="16"
+                      height="16"
+                      viewBox="0 0 24 24"
+                      fill="none"
+                      stroke="currentColor"
+                      strokeWidth="2"
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      aria-hidden="true"
+                    >
+                      <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8Z" />
+                      <circle cx="12" cy="12" r="3" />
+                    </svg>
+                  )}
                 </button>
               )}
             </div>
