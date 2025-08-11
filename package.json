@@ -1,0 +1,35 @@
+{
+  "name": "serverless-api",
+  "version": "1.0.0",
+  "description": "Serverless API with API Gateway, Lambda, and DynamoDB",
+  "main": "index.js",
+  "scripts": {
+    "setup": "./setup.sh",
+    "cleanup": "./cleanup.sh",
+    "deploy": "cd cdk-infrastructure && npm run build && cdk deploy",
+    "destroy": "cd cdk-infrastructure && cdk destroy",
+    "frontend": "cd auth-front && npm run dev",
+    "build": "cd cdk-infrastructure && npm run build",
+    "install-all": "npm install && cd cdk-infrastructure && npm install && cd ../auth-front && npm install && cd ../cdk-infrastructure/lambda && npm install"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/naonao0001777/serverless-api.git"
+  },
+  "keywords": [
+    "aws",
+    "serverless",
+    "api-gateway",
+    "lambda",
+    "dynamodb",
+    "cdk",
+    "next.js",
+    "typescript"
+  ],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/naonao0001777/serverless-api/issues"
+  },
+  "homepage": "https://github.com/naonao0001777/serverless-api#readme"
+}
