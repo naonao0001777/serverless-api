@@ -40,6 +40,8 @@ export class CdkInfrastructureStack extends cdk.Stack {
       role: lambdaRole,
       environment: {
         AUTH_TABLE_NAME: authTable.tableName,
+        DEFAULT_REDIRECT_URL: process.env.DEFAULT_REDIRECT_URL || 'https://example.com/default',
+        DEFAULT_PASSWORD: process.env.DEFAULT_PASSWORD || 'default123',
       },
     });
 
