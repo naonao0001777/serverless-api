@@ -15,12 +15,17 @@ cp .env.example .env
 `.env`ファイルの内容を編集：
 
 ```bash
-# デフォルトリダイレクトURL
-DEFAULT_REDIRECT_URL=https://your-actual-redirect-url.com
+# 本番用リダイレクトURL（正しいパスワードの場合）
+PRODUCTION_REDIRECT_URL=https://your-actual-production-site.com
 
-# デフォルトパスワード
-DEFAULT_PASSWORD=your-secure-password
+# 本番用パスワード（実際の認証に使用）
+PRODUCTION_PASSWORD=your-secure-password
 ```
+
+### 認証の仕組み
+
+- **テスト用**: `admin123` → 常に `https://example.com` に飛ばす
+- **本番用**: 設定したパスワード → `PRODUCTION_REDIRECT_URL` に飛ばす
 
 ### 2. 依存関係のインストール
 
